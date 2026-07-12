@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Limit Trader FX</title>
+    <meta name="description" content="Professional Trading Journal">
+
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="icon-192.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>🚀 Limit Trader FX</h1>
+        <p>Professional Trading Journal</p>
+    </header>
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>Total Trades</h2>
+            <h1 id="totalTrades">0</h1>
+        </div>
+        <div class="card">
+            <h2>Win Rate</h2>
+            <h1 id="winRate">0%</h1>
+        </div>
+        <div class="card">
+            <h2>Total Profit</h2>
+            <h1 id="totalProfit">$0</h1>
+        </div>
+        <div class="card">
+            <h2>Average R:R</h2>
+            <h1 id="averageRR">0</h1>
+        </div>
+        <div class="card">
+            <h2>A+ Setups</h2>
+            <h1 id="aPlus">0</h1>
+        </div>
+        <div class="card">
+            <h2>Profit Factor</h2>
+            <h1 id="profitFactor">0</h1>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a href="add-trade.html">
+            <button>➕ Add Trade</button>
+        </a>
+
+        <a href="history.html">
+            <button>📋 Trade History</button>
+        </a>
+
+        <!-- Install App Button -->
+        <button id="installButton" style="background:#00ff88; color:#0f172a; font-weight:bold; display:none;">
+            📲 Install App
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- PWA Scripts -->
+    <script>
+        let deferredPrompt;
+
+        // Register Service Worker
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js")
+                .then(() => console.log("✅ Service Worker Registered"))
+                .catch(err => console.log("❌ Service Worker Error:", err));
+        }
+
+        // Show Install Button
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+            document.getElementById('installButton').style.display = 'block';
+        });
+
+        // Handle Install Click
+        document.getElementById('installButton').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('✅ User installed Limit Trader FX');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
