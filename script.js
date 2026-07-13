@@ -1,40 +1,63 @@
-// Save Trade
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener("DOMContentLoaded", function () {
-
+    // SAVE TRADE
     const saveBtn = document.getElementById("saveTrade");
 
     if (saveBtn) {
-
-        saveBtn.addEventListener("click", function () {
+        saveBtn.addEventListener("click", () => {
 
             let trades = JSON.parse(localStorage.getItem("trades")) || [];
 
-            const trade = {
-                pair: document.getElementById("pair").value,
-                date: document.getElementById("date").value,
-                session: document.getElementById("session").value,
-                bias: document.getElementById("bias").value,
-                setup: document.getElementById("setup").value,
-                setupType: document.getElementById("setupType").value,
-                liquidity: document.getElementById("liquidity").value,
-                risk: document.getElementById("risk").value,
-                rr: document.getElementById("rr").value,
-                result: document.getElementById("result").value,
-                profit: Number(document.getElementById("profit").value) || 0,
-                aplus: document.getElementById("aplus").value,
-                notes: document.getElementById("notes").value
-            };
-
-            trades.push(trade);
+            trades.push({
+                pair: pair.value,
+                date: date.value,
+                session: session.value,
+                bias: bias.value,
+                setup: setup.value,
+                setupType: setupType.value,
+                liquidity: liquidity.value,
+                risk: risk.value,
+                rr: rr.value,
+                result: result.value,
+                profit: Number(profit.value) || 0,
+                aplus: aplus.value,
+                notes: notes.value
+            });
 
             localStorage.setItem("trades", JSON.stringify(trades));
 
-            alert("✅ Trade Saved Successfully!");
-
-            window.location.href = "history.html";
+            alert("Trade Saved!");
+            location.href = "history.html";
         });
+    }
 
+    // HISTORY PAGE
+    const history = document.getElementById("history");
+
+    if (history) {
+
+        let trades = JSON.parse(localStorage.getItem("trades")) || [];
+
+        if (trades.length === 0) {
+            history.innerHTML = "<h3>No trades saved.</h3>";
+        } else {
+
+            trades.reverse().forEach(trade => {
+
+                history.innerHTML += `
+                <div class="card">
+                    <h3>${trade.pair}</h3>
+                    <p><b>Date:</b> ${trade.date}</p>
+                    <p><b>Session:</b> ${trade.session}</p>
+                    <p><b>Bias:</b> ${trade.bias}</p>
+                    <p><b>Result:</b> ${trade.result}</p>
+                    <p><b>Profit:</b> $${trade.profit}</p>
+                    <p><b>R:R:</b> ${trade.rr}</p>
+                    <p><b>Notes:</b> ${trade.notes}</p>
+                </div><br>`;
+            });
+
+        }
     }
 
 });
