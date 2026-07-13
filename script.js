@@ -61,3 +61,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+const totalTrades = document.getElementById("totalTrades");
+
+if (totalTrades) {
+
+    let trades = JSON.parse(localStorage.getItem("trades")) || [];
+
+    document.getElementById("totalTrades").textContent = trades.length;
+
+    let wins = trades.filter(t => t.result === "Win").length;
+
+    document.getElementById("winRate").textContent =
+        trades.length ? ((wins / trades.length) * 100).toFixed(1) + "%" : "0%";
+
+    let profit = trades.reduce((sum, t) => sum + Number(t.profit || 0), 0);
+    document.getElementById("totalProfit").textContent = "$" + profit;
+
+    let aplus = trades.filter(t => t.aplus === "Yes").length;
+    document.getElementById("aPlus").textContent = aplus;
+
+    let rr = 0;
+    trades.forEach(t => {
+        if (t.rr.includes(":")) {
+            rr += Number(t.rr.split(":")[1]);
+        }
+    });
+
+    document.getElementById("averageRR").textContent =
+        trades.length ? (rr / trades.length).toFixed(2) : "0";
+
+    document.getElementById("profitFactor").textContent = "Coming Soon";
+}
